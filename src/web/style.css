@@ -156,7 +156,8 @@ body {
 .achievement-badge { font-size: 1.4rem; }
 
 /* ─── Chat ───────────────────────────────── */
-.view[data-view="chat"] { padding: 0; }
+/* Zero out the view gap and padding for chat — footer must sit flush at bottom */
+.view[data-view="chat"] { padding: 0; gap: 0; }
 #messages {
   flex: 1; overflow-y: auto; padding: 1rem;
   display: flex; flex-direction: column; gap: .5rem;
@@ -294,6 +295,8 @@ button {
 button[type="submit"], .btn-primary {
   background: var(--accent); color: #000; width: 100%;
 }
+/* Chat send button must NOT stretch — it lives in a flex row with the textarea */
+.chat-footer #send { width: auto; flex-shrink: 0; }
 button[type="submit"]:hover, .btn-primary:hover { background: var(--accent-2); }
 button:disabled { opacity: .5; cursor: not-allowed; }
 .ghost {
@@ -322,6 +325,9 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 
 /* ─── Mobile breakpoint ─────────────────── */
 @media (max-width: 720px) {
+  /* Stack sidebar (hidden), main-content, bottom-nav vertically */
+  #app { flex-direction: column; }
+
   #sidebar {
     display: none; position: fixed; inset-block: 0; inset-inline-start: 0;
     width: 240px; z-index: 50; transition: transform .25s; transform: translateX(-100%);
@@ -329,9 +335,11 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   #sidebar.open { display: flex; transform: translateX(0); }
   [dir="rtl"] #sidebar { inset-inline-start: auto; inset-inline-end: 0; transform: translateX(100%); }
   [dir="rtl"] #sidebar.open { transform: translateX(0); }
+
+  .main-content { flex: 1; min-height: 0; }
   #topbar     { display: flex; }
-  #bottom-nav { display: flex; }
-  .view       { padding-block-end: calc(var(--bnav-h) + .5rem); }
+  #bottom-nav { display: flex; width: 100%; flex-shrink: 0; }
+  .view       { padding-block-end: 0; }
   .bento-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 420px) {

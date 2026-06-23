@@ -94,6 +94,12 @@ function showApp(userId) {
     setTimeout(() => addMsg('⚠ Motra connection failed.', 'bot'), 300);
   }
   navigate(window.location.hash.slice(1) || 'dashboard');
+
+  // Welcome message in chat (only on first login, not on page refresh)
+  const msgs = document.getElementById('messages');
+  if (msgs && !msgs.childElementCount) {
+    setTimeout(() => addMsg(i18n('chat.greeting'), 'bot'), 400);
+  }
 }
 
 $('#login-form').addEventListener('submit', async (e) => {
