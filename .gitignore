@@ -1,0 +1,20 @@
+node_modules/
+dist/
+.env
+*.log
+
+# Per-user memory is private data — never commit real users.
+users/*
+!users/_example/
+!users/.gitkeep
+
+# Motra OAuth registration (env-specific, not for version control)
+motra-client.json
+
+# Temp / scratch
+_raw_*.md
+_convert.py
+
+# Claude plans / sessions (local only)
+.claude/plans/
+dev.err

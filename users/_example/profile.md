@@ -1,0 +1,13 @@
+# Profile — Dana (example)
+- userId: _example
+- language: he
+- sex: female
+- age: 34
+- height_cm: 166
+- weight_kg: 60
+- bodyfat_pct: 28
+- activity: moderate
+- goal: fat_loss (moderate)
+- restrictions: kosher, no_fish, no_eggplant, lactose_sensitive
+- dislikes: mushrooms
+- notes: Prefers quick breakfasts; trains evenings.

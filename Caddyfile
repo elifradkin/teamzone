@@ -1,0 +1,12 @@
+# Replace teamzone.example.com with your domain and set your email.
+# Caddy fetches and renews a free Let's Encrypt certificate automatically.
+
+teamzone.example.com {
+	encode gzip
+	reverse_proxy app:3000
+}
+
+# Optional: redirect bare http handled automatically by Caddy.
+{
+	email you@example.com
+}

@@ -1,0 +1,32 @@
+# Hetzner deployment: the app + Caddy for automatic HTTPS.
+# 1. Point a domain's A record at your Hetzner server IP.
+# 2. Put the domain + your email in Caddyfile.
+# 3. `docker compose up -d`
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      # Persist private per-user memory outside the image.
+      - ./users:/app/users
+    expose:
+      - "3000"
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

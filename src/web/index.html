@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Zone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ───── Login ───── -->
+<div id="login" class="overlay">
+  <form id="login-form" class="login-card">
+    <div class="login-logo">TZ</div>
+    <h1>Team Zone</h1>
+    <p class="muted">Fitness &amp; Nutrition Assistant</p>
+    <input id="login-user" placeholder="User ID" autocomplete="username" />
+    <input id="login-pin" type="password" placeholder="PIN" autocomplete="current-password" />
+    <button type="submit">Sign in</button>
+    <p id="login-error" class="error"></p>
+  </form>
+</div>
+
+<!-- ───── App Shell ───── -->
+<div id="app" class="hidden">
+
+  <!-- Sidebar (desktop) -->
+  <nav id="sidebar">
+    <div class="sidebar-brand">TZ</div>
+    <ul class="sidebar-nav">
+      <li><a href="#dashboard" class="nav-item active" data-view="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span data-i18n="nav.dashboard">Dashboard</span>
+      </a></li>
+      <li><a href="#chat" class="nav-item" data-view="chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span data-i18n="nav.chat">Chat</span>
+      </a></li>
+      <li><a href="#workouts" class="nav-item" data-view="workouts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v16M18 4v16M3 8h18M3 16h18"/></svg>
+        <span data-i18n="nav.workouts">Workouts</span>
+      </a></li>
+      <li><a href="#nutrition" class="nav-item" data-view="nutrition">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 6v6l4 2"/></svg>
+        <span data-i18n="nav.nutrition">Nutrition</span>
+      </a></li>
+      <li><a href="#profile" class="nav-item" data-view="profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span data-i18n="nav.profile">Profile</span>
+      </a></li>
+    </ul>
+  </nav>
+
+  <!-- Main content -->
+  <div class="main-content">
+
+    <!-- Top bar (visible on mobile) -->
+    <header id="topbar">
+      <button id="menu-toggle" class="icon-btn" aria-label="menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <span id="page-title" class="topbar-title">Dashboard</span>
+      <span id="topbar-user" class="muted"></span>
+    </header>
+
+    <!-- ── Dashboard ── -->
+    <section data-view="dashboard" class="view active">
+      <div class="bento-grid">
+
+        <div class="card card-readiness" id="card-readiness">
+          <p class="card-label" data-i18n="dashboard.readiness">Readiness</p>
+          <div class="readiness-gauge">
+            <span id="readiness-score" class="readiness-num">—</span>
+            <span class="readiness-denom">/10</span>
+          </div>
+          <p id="readiness-label" class="muted small"></p>
+        </div>
+
+        <div class="card card-health" id="card-health">
+          <p class="card-label" data-i18n="dashboard.today">Today</p>
+          <div class="health-row">
+            <div class="hmetric"><span id="m-steps">—</span><small>steps</small></div>
+            <div class="hmetric"><span id="m-sleep">—</span><small>sleep h</small></div>
+            <div class="hmetric"><span id="m-hr">—</span><small>HR bpm</small></div>
+          </div>
+        </div>
+
+        <div class="card card-macros">
+          <p class="card-label" data-i18n="dashboard.macros">Daily Macros</p>
+          <div class="ring-row">
+            <div class="ring-wrap"><canvas id="ring-protein" width="80" height="80"></canvas><small data-i18n="macro.protein">Protein</small></div>
+            <div class="ring-wrap"><canvas id="ring-carbs" width="80" height="80"></canvas><small data-i18n="macro.carbs">Carbs</small></div>
+            <div class="ring-wrap"><canvas id="ring-fat" width="80" height="80"></canvas><small data-i18n="macro.fat">Fat</small></div>
+          </div>
+        </div>
+
+        <div class="card card-workout" id="card-last-workout">
+          <p class="card-label" data-i18n="dashboard.lastWorkout">Last Workout</p>
+          <div id="last-workout-body" class="muted small">—</div>
+        </div>
+
+        <div class="card card-achievement" id="card-achievement">
+          <p class="card-label" data-i18n="dashboard.achievement">Latest PR</p>
+          <div id="achievement-body" class="muted small">—</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Chat ── -->
+    <section data-view="chat" class="view">
+      <div id="messages"></div>
+      <form id="chat-form" class="chat-footer">
+        <textarea id="input" rows="1" data-i18n="chat.placeholder" placeholder="Ask about meals, training, targets…"></textarea>
+        <button type="submit" id="send" data-i18n="chat.send">Send</button>
+      </form>
+    </section>
+
+    <!-- ── Workouts ── -->
+    <section data-view="workouts" class="view">
+      <div class="sub-tabs">
+        <button class="sub-tab active" data-subtab="cal" data-i18n="workouts.calendar">Calendar</button>
+        <button class="sub-tab" data-subtab="hist" data-i18n="workouts.history">History</button>
+        <button class="sub-tab" data-subtab="stats" data-i18n="workouts.stats">Stats</button>
+      </div>
+      <div id="sub-cal" class="sub-panel active">
+        <div id="cal-controls" class="cal-controls">
+          <button id="cal-prev" class="icon-btn">‹</button>
+          <span id="cal-month-label"></span>
+          <button id="cal-next" class="icon-btn">›</button>
+        </div>
+        <div id="cal-grid" class="cal-grid"></div>
+        <div id="cal-detail" class="cal-detail hidden"></div>
+      </div>
+      <div id="sub-hist" class="sub-panel hidden">
+        <div id="workout-list" class="workout-list"></div>
+      </div>
+      <div id="sub-stats" class="sub-panel hidden">
+        <div id="stat-cards" class="stat-cards"></div>
+        <div class="chart-wrap"><canvas id="chart-weekly"></canvas></div>
+      </div>
+    </section>
+
+    <!-- ── Nutrition ── -->
+    <section data-view="nutrition" class="view">
+      <div class="card">
+        <p class="card-label" data-i18n="dashboard.macros">Daily Macros</p>
+        <div id="macro-bars"></div>
+      </div>
+      <div class="card chart-card">
+        <p class="card-label" data-i18n="nutrition.weightTrend">Weight Trend (12 weeks)</p>
+        <div class="chart-wrap"><canvas id="chart-weight"></canvas></div>
+      </div>
+      <div class="card">
+        <p class="card-label" data-i18n="nutrition.todayLog">Today's Log</p>
+        <div id="meal-log"></div>
+        <button class="ghost small" id="chat-link" onclick="navigate('chat')" data-i18n="nutrition.askForSuggestions">Ask for meal suggestions →</button>
+      </div>
+    </section>
+
+    <!-- ── Profile ── -->
+    <section data-view="profile" class="view">
+      <form id="profile-form" class="card">
+        <p class="card-label" data-i18n="profile.metrics">Your Metrics</p>
+        <div class="form-grid">
+          <label class="field"><span data-i18n="profile.name">Name</span><input name="name" type="text" /></label>
+          <label class="field"><span data-i18n="profile.weight">Weight (kg)</span><input name="weight_kg" type="number" step="0.1" min="30" max="300" /></label>
+          <label class="field"><span data-i18n="profile.height">Height (cm)</span><input name="height_cm" type="number" min="100" max="250" /></label>
+          <label class="field"><span data-i18n="profile.bodyfat">Body Fat %</span><input name="bodyfat_pct" type="number" step="0.1" min="5" max="60" /></label>
+          <label class="field"><span data-i18n="profile.age">Age</span><input name="age" type="number" min="10" max="100" /></label>
+          <label class="field">
+            <span>Activity</span>
+            <select name="activity">
+              <option value="sedentary" data-i18n="activity.sedentary">Sedentary</option>
+              <option value="light" data-i18n="activity.light">Lightly active</option>
+              <option value="moderate" data-i18n="activity.moderate">Moderately active</option>
+              <option value="high" data-i18n="activity.high">Very active</option>
+            </select>
+          </label>
+        </div>
+        <div class="goal-group">
+          <p class="card-label" data-i18n="profile.goal">Goal</p>
+          <label class="radio-label"><input type="radio" name="goal" value="fat_loss" /><span data-i18n="goal.fatLoss">Fat Loss</span></label>
+          <label class="radio-label"><input type="radio" name="goal" value="maintain" /><span data-i18n="goal.maintain">Maintain</span></label>
+          <label class="radio-label"><input type="radio" name="goal" value="build_muscle" /><span data-i18n="goal.buildMuscle">Build Muscle</span></label>
+        </div>
+        <button type="submit" class="btn-primary" data-i18n="profile.save">Save Changes</button>
+        <p id="profile-msg" class="muted small"></p>
+      </form>
+
+      <div class="card" id="targets-card" style="display:none">
+        <p class="card-label" data-i18n="profile.targets">Daily Targets</p>
+        <div id="targets-display" class="targets-grid"></div>
+      </div>
+
+      <div class="card">
+        <p class="card-label" data-i18n="profile.motra">Motra Workouts</p>
+        <p id="motra-status-text" class="muted small" data-i18n="profile.motraDisconnected">Not connected</p>
+        <p class="muted small" data-i18n="profile.motraPrivacy">Workout data syncs via Anthropic (standard retention).</p>
+        <button id="motra-toggle-btn" class="ghost small" data-i18n="profile.motraConnect">Connect Motra</button>
+      </div>
+
+      <div class="card">
+        <p class="card-label" data-i18n="profile.language">Language</p>
+        <div class="lang-row">
+          <button id="btn-lang-he" class="ghost small">עברית</button>
+          <button id="btn-lang-en" class="ghost small">English</button>
+        </div>
+      </div>
+
+      <button id="logout-btn" class="btn-danger" data-i18n="profile.signOut">Sign out</button>
+    </section>
+
+  </div><!-- /main-content -->
+
+  <!-- Bottom nav (mobile) -->
+  <nav id="bottom-nav">
+    <a href="#dashboard" class="bnav-item active" data-view="dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span data-i18n="nav.dashboard">Home</span>
+    </a>
+    <a href="#chat" class="bnav-item" data-view="chat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span data-i18n="nav.chat">Chat</span>
+    </a>
+    <a href="#workouts" class="bnav-item" data-view="workouts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v16M18 4v16M3 8h18M3 16h18"/></svg>
+      <span data-i18n="nav.workouts">Train</span>
+    </a>
+    <a href="#nutrition" class="bnav-item" data-view="nutrition">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 6v6l4 2"/></svg>
+      <span data-i18n="nav.nutrition">Food</span>
+    </a>
+    <a href="#profile" class="bnav-item" data-view="profile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span data-i18n="nav.profile">Me</span>
+    </a>
+  </nav>
+
+</div><!-- /app -->
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
