@@ -1,0 +1,31 @@
+{
+  "common": {
+    "appName": "TeamZone",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "edit": "Edit"
+  },
+  "nav": {
+    "home": "Home",
+    "body": "Body",
+    "train": "Train",
+    "nutrition": "Nutrition",
+    "coach": "Coach"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "logOut": "Log out"
+  },
+  "body": {
+    "recovery": "Recovery",
+    "fresh": "Fresh",
+    "fatigued": "Fatigued",
+    "mannequin": "Mannequin",
+    "list": "List"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "common": {
+    "appName": "TeamZone",
+    "save": "שמירה",
+    "cancel": "ביטול",
+    "confirm": "אישור",
+    "edit": "עריכה"
+  },
+  "nav": {
+    "home": "בית",
+    "body": "גוף",
+    "train": "אימון",
+    "nutrition": "תזונה",
+    "coach": "מאמן"
+  },
+  "auth": {
+    "signIn": "התחברות",
+    "signUp": "הרשמה",
+    "email": "אימייל",
+    "password": "סיסמה",
+    "forgotPassword": "שכחת סיסמה?",
+    "logOut": "התנתקות"
+  },
+  "body": {
+    "recovery": "התאוששות",
+    "fresh": "רענן",
+    "fatigued": "עייף",
+    "mannequin": "בובה",
+    "list": "רשימה"
+  }
+}

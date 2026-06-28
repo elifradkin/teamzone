@@ -1,0 +1,77 @@
+// Phase 1 schema — auth + the Motra-agnostic data spine only.
+// Later tables (profiles, nutrition, avatars, motra_connections, scores, …) are
+// added in their own phases (PLAN.md, CLAUDE.md Rule 1).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum WorkoutSource {
+  motra
+  manual
+  health
+}
+
+enum MuscleGroup {
+  chest
+  back
+  shoulders
+  biceps
+  triceps
+  forearms
+  abs
+  glutes
+  quadriceps
+  hamstrings
+  calves
+}
+
+model User {
+  id           String           @id @default(cuid())
+  email        String           @unique
+  passwordHash String
+  locale       String           @default("en")
+  createdAt    DateTime         @default(now())
+  sessions     Session[]
+  workouts     WorkoutSession[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// The data spine: a workout from any source maps into these two tables.
+model WorkoutSession {
+  id         String         @id @default(cuid())
+  userId     String
+  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  source     WorkoutSource
+  occurredAt DateTime
+  createdAt  DateTime       @default(now())
+  efforts    MuscleEffort[]
+
+  @@index([userId, occurredAt])
+}
+
+model MuscleEffort {
+  id          String         @id @default(cuid())
+  sessionId   String
+  session     WorkoutSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  muscleGroup MuscleGroup
+  sets        Int
+  volume      Float
+  rpe         Float?
+
+  @@index([sessionId])
+}
