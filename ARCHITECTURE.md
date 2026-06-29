@@ -27,10 +27,12 @@ against sources on 2026-06-27; re-confirm at build time. Facts marked
   (Production-with-real-users should revisit a proper domain — see R-13.)
 
 ## 2. Authentication
-- v1: **self-hosted local accounts** — email + password. Library: Lucia or
-  Auth.js (decide Phase 1). Argon2id password hashing; HTTP-only secure session
-  cookies (web) + secure token storage (mobile); password-reset via email;
-  optional TOTP 2FA later.
+- v1: **self-hosted local accounts** — email + password. Built natively in
+  NestJS (`@nestjs/passport`-style guards) with **argon2id** hashing (O6).
+  HTTP-only secure session cookies; sessions are **DB-backed** (the `Session`
+  table in Postgres) for Phase 1 — Redis can replace/cache this later. Password
+  reset + optional TOTP 2FA come as later increments. Google/Apple via Passport
+  strategies later.
 - Google/Apple sign-in: deferred to a later phase, brokered server-side (your
   server holds the session; no third-party IdP holds the user table).
 - All auth secrets (session keys, OAuth client secrets when added) in `.env`.
