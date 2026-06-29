@@ -25,4 +25,8 @@ export class SessionService {
   async destroy(sessionId: string) {
     await this.prisma.session.deleteMany({ where: { id: sessionId } });
   }
+
+  async destroyAllForUser(userId: string) {
+    await this.prisma.session.deleteMany({ where: { userId } });
+  }
 }

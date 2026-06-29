@@ -20,4 +20,9 @@ export class UsersService {
   findById(id: string) {
     return this.prisma.user.findUnique({ where: { id } });
   }
+
+  async updatePassword(userId: string, newPassword: string) {
+    const passwordHash = await argon2.hash(newPassword, { type: argon2.argon2id });
+    return this.prisma.user.update({ where: { id: userId }, data: { passwordHash } });
+  }
 }

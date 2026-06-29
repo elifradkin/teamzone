@@ -11,8 +11,9 @@ import {
 import type { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import { SessionService } from "./session.service";
+import { PasswordResetService } from "./password-reset.service";
 import { AuthGuard } from "./auth.guard";
-import { LoginDto, SignupDto } from "./dto";
+import { ForgotPasswordDto, LoginDto, ResetPasswordDto, SignupDto } from "./dto";
 import { SESSION_COOKIE, sessionCookieOptions } from "./constants";
 
 interface SessionUser {
@@ -25,6 +26,7 @@ export class AuthController {
   constructor(
     private readonly auth: AuthService,
     private readonly sessions: SessionService,
+    private readonly passwordReset: PasswordResetService,
   ) {}
 
   @Post("signup")
@@ -55,6 +57,25 @@ export class AuthController {
   @UseGuards(AuthGuard)
   me(@Req() req: Request & { user: SessionUser }) {
     return { id: req.user.id, email: req.user.email };
+  }
+
+  @Post("forgot-password")
+  @HttpCode(200)
+  async forgotPassword(@Body() dto: ForgotPasswordDto) {
+    const token = await this.passwordReset.request(dto.email);
+    // Always 200 (don't reveal whether the email exists). Email delivery is
+    // stubbed for now; outside production we return the token so the flow is
+    // testable until SMTP is wired in.
+    const body: { ok: true; devToken?: string } = { ok: true };
+    if (process.env.NODE_ENV !== "production" && token) body.devToken = token;
+    return body;
+  }
+
+  @Post("reset-password")
+  @HttpCode(200)
+  async resetPassword(@Body() dto: ResetPasswordDto) {
+    await this.passwordReset.reset(dto.token, dto.password);
+    return { ok: true };
   }
 
   private async startSession(userId: string, res: Response): Promise<void> {
