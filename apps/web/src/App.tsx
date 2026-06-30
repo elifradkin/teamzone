@@ -180,11 +180,11 @@ function Onboarding({ locale, onDone }: { locale: Locale; onDone: (p: Profile) =
       </label>
       <label style={field}>
         {t(locale, "onb.currentWeight")}
-        <input type="number" min={30} max={400} value={currentWeight} onChange={(e) => setCurrentWeight(e.target.value)} />
+        <input type="number" min={30} max={400} step={0.1} inputMode="decimal" value={currentWeight} onChange={(e) => setCurrentWeight(e.target.value)} />
       </label>
       <label style={field}>
         {t(locale, "onb.targetWeight")}
-        <input type="number" min={30} max={400} value={targetWeight} onChange={(e) => setTargetWeight(e.target.value)} />
+        <input type="number" min={30} max={400} step={0.1} inputMode="decimal" value={targetWeight} onChange={(e) => setTargetWeight(e.target.value)} />
       </label>
       {error && <p style={{ color: "crimson" }}>{error}</p>}
       <button type="submit">{t(locale, "onb.finish")}</button>

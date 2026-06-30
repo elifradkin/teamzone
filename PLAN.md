@@ -1,9 +1,12 @@
 # PLAN.md — TeamZone v2 Phased Roadmap
 
 Status legend: ☐ not started · ◐ in progress · ☑ done (gate passed + approved)
-Active phase: **Phase 2 — Profile & Onboarding + Baseline Plan Seeds** (started 2026-06-30, approved by Eli)
-Phase 0: ☑ DONE. Phase 1: ☑ DONE (gate passed; staging live at
-https://5-78-70-179.sslip.io). Body-type taxonomy = lean / average / muscular.
+Active phase: **Phase 3 — Motra ingestion + visualizations + effort/recovery scoring** (started 2026-06-30, approved by Eli)
+Phase 0: ☑. Phase 1: ☑. Phase 2: ☑ DONE (gate passed; onboarding + plan verified
+HE/EN on staging). Body-type taxonomy = lean / average / muscular. UI polish is
+per-phase (Eli's choice). Phase 3 order: build scoring/visualization data first
+(Motra-agnostic, testable); Motra server-side ingestion is a gated sub-step
+(needs OAuth/MCP client + carries R-1 ToS risk; not CI-testable without Motra).
 
 ## How every phase runs (the ritual)
 1. Confirm with Eli that this phase is the active, approved target.
@@ -71,7 +74,7 @@ HE/EN RTL smoke on auth + shell.
 **Definition of Done:** A user can register and log in on staging, switch
 language/direction, and manually enter a workout that lands in the data spine.
 
-## Phase 2 — Profile & Onboarding + Baseline Plan Seeds
+## Phase 2 — Profile & Onboarding + Baseline Plan Seeds   ☑ DONE (gate passed 2026-06-30)
 **Goal:** Capture the user and seed baseline plans.
 **Scope / deliverables:**
 - Profile: age, height, weight, body type, multiple goals, free-text food
