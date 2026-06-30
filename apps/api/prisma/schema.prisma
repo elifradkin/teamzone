@@ -70,6 +70,19 @@ model User {
   bodyMetrics  BodyMetric[]
   consents     Consent[]
   motra        MotraConnection?
+  avatarPhoto  AvatarPhoto?
+}
+
+// Uploaded avatar source photo — the most sensitive data (Rule 7). Stored only
+// with avatar_photo consent; retention-limited; deletable on request.
+// (DB-blob storage for now; migrate to EU object storage / MinIO before launch.)
+model AvatarPhoto {
+  userId         String    @id
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  data           Bytes
+  contentType    String
+  uploadedAt     DateTime  @default(now())
+  retentionUntil DateTime?
 }
 
 // Per-user Motra MCP connection. Tokens are encrypted at rest (R-1/Rule 4/7).

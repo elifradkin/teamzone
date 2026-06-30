@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { AuthModule } from "./auth/auth.module";
+import { AvatarModule } from "./avatar/avatar.module";
 import { ConsentModule } from "./consent/consent.module";
 import { HealthModule } from "./health/health.module";
 import { MealPlansModule } from "./meal-plans/meal-plans.module";
@@ -20,6 +21,7 @@ import { WorkoutsModule } from "./workouts/workouts.module";
     ConsentModule,
     ScoresModule,
     MotraModule,
+    AvatarModule,
   ],
 })
 export class AppModule {}
