@@ -1,9 +1,9 @@
 # PLAN.md — TeamZone v2 Phased Roadmap
 
 Status legend: ☐ not started · ◐ in progress · ☑ done (gate passed + approved)
-Active phase: **Phase 1 — Foundations** (started 2026-06-27)
-Phase 0 — Discovery & Grounding: ☑ DONE (verifications complete; see the
-Verification log in DECISIONS-AND-RISKS.md).
+Active phase: **Phase 2 — Profile & Onboarding + Baseline Plan Seeds** (started 2026-06-30, approved by Eli)
+Phase 0: ☑ DONE. Phase 1: ☑ DONE (gate passed; staging live at
+https://5-78-70-179.sslip.io). Body-type taxonomy = lean / average / muscular.
 
 ## How every phase runs (the ritual)
 1. Confirm with Eli that this phase is the active, approved target.
@@ -51,7 +51,7 @@ build decisions harden. No app code.
 **Definition of Done:** Eli has a grounded architecture + risk register; the
 Motra-path decision is resolved or its blocker is explicit.
 
-## Phase 1 — Foundations
+## Phase 1 — Foundations   ☑ DONE (gate passed 2026-06-30)
 **Goal:** A running, multi-user, bilingual skeleton on staging.
 **Scope / deliverables:**
 - Monorepo scaffold (web, mobile, backend, shared packages).
@@ -257,6 +257,21 @@ launch checklist signed off by Eli.
 
 ## Deviations log
 (Record here, per phase, anything that diverged from this plan and why.)
+- **Phase 1 (done 2026-06-30):** Stack resolved — Turborepo+pnpm, Vite SPA,
+  Prisma, NestJS Passport+argon2id (O2/O3/O4/O6). Deviations + follow-ups to
+  carry forward:
+  (a) Sessions are **DB-backed** (Session table), Redis deferred.
+  (b) **Web uses a local i18n catalog**, not @teamzone/shared — consolidate once
+      shared is a built package consumable by Vite + NestJS. [follow-up]
+  (c) API uses `@prisma/client` enums instead of importing @teamzone/shared
+      (cross-package build not yet set up). [follow-up]
+  (d) Schema synced via `prisma db push` (no migration files yet) — add proper
+      Prisma migrations before launch. [follow-up]
+  (e) Password-reset email is **stubbed** (devToken outside prod) — wire SMTP.
+      [follow-up, Phase 11]
+  (f) No committed `pnpm-lock.yaml` (CI/Docker use --no-frozen-lockfile) — commit
+      a lockfile for reproducible builds. [follow-up]
+  (g) Hosting = US box (R-14), no domain / sslip.io HTTPS (R-13), per Eli.
 - **Phase 0:** Eli elected (a) Motra server-side ingestion **without** prior
   permission (accepted risk R-1; permission email drafted), (b) reuse of an
   existing **US** Hetzner box — EU residency waived (R-14), (c) **no domain**

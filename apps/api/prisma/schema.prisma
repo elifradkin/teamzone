@@ -32,6 +32,25 @@ enum MuscleGroup {
   calves
 }
 
+enum Sex {
+  male
+  female
+}
+
+enum BodyType {
+  lean
+  average
+  muscular
+}
+
+enum Goal {
+  build_muscle
+  lose_fat
+  gain_strength
+  maintain
+  improve_endurance
+}
+
 model User {
   id           String           @id @default(cuid())
   email        String           @unique
@@ -41,6 +60,8 @@ model User {
   sessions     Session[]
   workouts     WorkoutSession[]
   resetTokens  PasswordResetToken[]
+  profile      Profile?
+  bodyMetrics  BodyMetric[]
 }
 
 model PasswordResetToken {
@@ -52,6 +73,34 @@ model PasswordResetToken {
   createdAt DateTime @default(now())
 
   @@index([userId])
+}
+
+model Profile {
+  userId           String    @id
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  age              Int?
+  heightCm         Int?
+  sex              Sex?
+  bodyType         BodyType?
+  goals            Goal[]
+  foodPreferences  String?
+  targetWeightKg   Float?
+  targetBodyFatPct Float?
+  startingWeightKg Float?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+// Current weight/body fat = latest measurement (single source of truth).
+model BodyMetric {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weightKg   Float
+  bodyFatPct Float?
+  measuredAt DateTime @default(now())
+
+  @@index([userId, measuredAt])
 }
 
 model Session {
