@@ -3,6 +3,7 @@ import { AuthModule } from "./auth/auth.module";
 import { ConsentModule } from "./consent/consent.module";
 import { HealthModule } from "./health/health.module";
 import { MealPlansModule } from "./meal-plans/meal-plans.module";
+import { MotraModule } from "./motra/motra.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { ProfileModule } from "./profile/profile.module";
 import { ScoresModule } from "./scores/scores.module";
@@ -18,6 +19,7 @@ import { WorkoutsModule } from "./workouts/workouts.module";
     MealPlansModule,
     ConsentModule,
     ScoresModule,
+    MotraModule,
   ],
 })
 export class AppModule {}

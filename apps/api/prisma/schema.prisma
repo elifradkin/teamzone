@@ -69,6 +69,18 @@ model User {
   profile      Profile?
   bodyMetrics  BodyMetric[]
   consents     Consent[]
+  motra        MotraConnection?
+}
+
+// Per-user Motra MCP connection. Tokens are encrypted at rest (R-1/Rule 4/7).
+// Isolated so the whole feature can be removed if Motra declines permission.
+model MotraConnection {
+  userId          String    @id
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  encryptedTokens String
+  status          String    @default("connected")
+  lastSyncedAt    DateTime?
+  createdAt       DateTime  @default(now())
 }
 
 model PasswordResetToken {

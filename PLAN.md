@@ -167,6 +167,11 @@ it renders correctly front+back in both languages, and the config persists.
 - Build/save **native workout templates/plans** in-app (from recommendations or
   manually). Motra MCP is read-only (D13) — templates live in our app; no push to
   Motra; Motra auto-detects the actual session and feeds it back via the read path.
+- DECIDE (flagged from Phase 2): whether to persist an **exercise reference per
+  logged set** for exercise-level history (e.g. "bench-press progression"), on top
+  of the muscle-group efforts the spine/mannequin use today. The manual-logging UI
+  (pick exercise → sets/reps/weight/RPE) is built here; the current Phase-1 web
+  "log workout" box is a stub until then.
 **Verification gate:** Unit on recommendation logic; integration on
 selection→results; regression (1–5); HE/EN RTL smoke on selection + results,
 including English exercise names inside Hebrew layout.
