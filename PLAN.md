@@ -1,7 +1,8 @@
 # PLAN.md — TeamZone v2 Phased Roadmap
 
 Status legend: ☐ not started · ◐ in progress · ☑ done (gate passed + approved)
-Active phase: **Phase 3 — Motra ingestion + visualizations + effort/recovery scoring** (started 2026-06-30, approved by Eli)
+Active phase: **Phase 4 — Mannequin + Gemini Avatar** (started 2026-06-30, approved by Eli). NOTE: Phase 3 gate stays OPEN on Motra-live verification (pending Motra reply); scoring core done.
+Prior active: **Phase 3 — Motra ingestion + visualizations + effort/recovery scoring**
 Phase 0: ☑. Phase 1: ☑. Phase 2: ☑ DONE (gate passed; onboarding + plan verified
 HE/EN on staging). Body-type taxonomy = lean / average / muscular. UI polish is
 per-phase (Eli's choice). Phase 3 order: build scoring/visualization data first
@@ -265,6 +266,13 @@ launch checklist signed off by Eli.
 
 ## Deviations log
 (Record here, per phase, anything that diverged from this plan and why.)
+- **Phase 3 (in progress, 2026-06-30):** Effort/recovery **scoring engine + /api/scores
+  DONE and tested** (pure unit tests + e2e). Motra ingestion **code-complete**:
+  encryption + normalizer + spine-import tested in CI; live OAuth/MCP sync written
+  + typecheck-validated against the real SDK but **flag-gated off
+  (MOTRA_INGESTION_ENABLED) and unverifiable until Motra replies** — verify on
+  staging with Eli's account once permission lands (R-1). Visualization UI
+  (mannequin) is Phase 4. **Phase 3 gate stays OPEN on the Motra-live verification.**
 - **Phase 1 (done 2026-06-30):** Stack resolved — Turborepo+pnpm, Vite SPA,
   Prisma, NestJS Passport+argon2id (O2/O3/O4/O6). Deviations + follow-ups to
   carry forward:

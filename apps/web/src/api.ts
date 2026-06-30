@@ -43,6 +43,14 @@ export interface BaselinePlan {
   meals: Meal[];
 }
 
+export interface MuscleScore {
+  muscleGroup: string;
+  recoveryPct: number;
+  effortSets: number;
+  effortVolume: number;
+  lastTrainedHoursAgo: number | null;
+}
+
 async function req<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(BASE + path, {
     credentials: "include",
@@ -67,6 +75,7 @@ export const api = {
   updateProfile: (data: Partial<Profile>) =>
     req<Profile>("/profile", { method: "PUT", body: JSON.stringify(data) }),
   getBaselinePlan: () => req<BaselinePlan>("/meal-plans/baseline"),
+  getScores: () => req<MuscleScore[]>("/scores"),
   listWorkouts: () => req<Workout[]>("/workouts"),
   createWorkout: (efforts: { muscleGroup: string; sets: number; volume: number }[]) =>
     req<Workout>("/workouts", { method: "POST", body: JSON.stringify({ efforts }) }),

@@ -1,5 +1,13 @@
 import { type CSSProperties, type FormEvent, useEffect, useState } from "react";
-import { api, type BaselinePlan, type Profile, type User, type Workout } from "./api";
+import {
+  api,
+  type BaselinePlan,
+  type MuscleScore,
+  type Profile,
+  type User,
+  type Workout,
+} from "./api";
+import { Mannequin } from "./Mannequin";
 import { dir, type Locale, t } from "./i18n";
 
 const GOALS = ["build_muscle", "lose_fat", "gain_strength", "maintain", "improve_endurance"] as const;
@@ -202,11 +210,13 @@ function Dashboard({
   onLogout: () => void;
 }) {
   const [plan, setPlan] = useState<BaselinePlan | null>(null);
+  const [scores, setScores] = useState<MuscleScore[]>([]);
   const [sets, setSets] = useState(3);
   const [workouts, setWorkouts] = useState<Workout[]>([]);
 
   function refresh() {
     void api.listWorkouts().then(setWorkouts).catch(() => undefined);
+    void api.getScores().then(setScores).catch(() => undefined);
   }
 
   useEffect(() => {
@@ -224,6 +234,8 @@ function Dashboard({
       <p>
         {t(locale, "dash.welcome")}, {user.email}
       </p>
+
+      <Mannequin locale={locale} scores={scores} />
 
       {plan && (
         <div>
