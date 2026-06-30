@@ -1,0 +1,13 @@
+**/node_modules
+**/dist
+**/.turbo
+.git
+.github
+*.png
+*.jpeg
+*.jpg
+*.zip
+**/.env
+**/.env.*
+!**/.env.example
+*.md
