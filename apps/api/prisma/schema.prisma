@@ -32,6 +32,12 @@ enum MuscleGroup {
   calves
 }
 
+enum ConsentType {
+  avatar_photo
+  health_data
+  ai_processing
+}
+
 enum Sex {
   male
   female
@@ -62,6 +68,7 @@ model User {
   resetTokens  PasswordResetToken[]
   profile      Profile?
   bodyMetrics  BodyMetric[]
+  consents     Consent[]
 }
 
 model PasswordResetToken {
@@ -101,6 +108,18 @@ model BodyMetric {
   measuredAt DateTime @default(now())
 
   @@index([userId, measuredAt])
+}
+
+model Consent {
+  id        String      @id @default(cuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      ConsentType
+  grantedAt DateTime    @default(now())
+  revokedAt DateTime?
+
+  @@unique([userId, type])
+  @@index([userId])
 }
 
 model Session {
