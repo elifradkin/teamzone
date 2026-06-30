@@ -123,9 +123,10 @@ export class MotraService {
  * The exact payload is UNVERIFIED — returns [] on any mismatch so a wrong
  * assumption yields "0 imported" rather than a crash. Tune against real output.
  */
-function parseMotraWorkouts(result: { content?: unknown; structuredContent?: unknown }): MotraWorkout[] {
-  let candidate: unknown = result.structuredContent;
-  if (candidate == null) candidate = extractTextJson(result.content);
+function parseMotraWorkouts(result: unknown): MotraWorkout[] {
+  const r = result as { content?: unknown; structuredContent?: unknown };
+  let candidate: unknown = r.structuredContent;
+  if (candidate == null) candidate = extractTextJson(r.content);
   if (candidate == null) return [];
 
   const arr = Array.isArray(candidate)
