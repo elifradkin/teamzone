@@ -17,6 +17,11 @@ import { AvatarService } from "./avatar.service";
 
 type AuthedRequest = Request & { user: { id: string } };
 
+interface UploadedPhoto {
+  buffer: Buffer;
+  mimetype: string;
+}
+
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
 
 @Controller("avatar")
@@ -26,7 +31,7 @@ export class AvatarController {
 
   @Post("photo")
   @UseInterceptors(FileInterceptor("file", { limits: { fileSize: MAX_PHOTO_BYTES } }))
-  uploadPhoto(@Req() req: AuthedRequest, @UploadedFile() file?: Express.Multer.File) {
+  uploadPhoto(@Req() req: AuthedRequest, @UploadedFile() file?: UploadedPhoto) {
     if (!file) throw new BadRequestException("No file uploaded");
     if (!file.mimetype.startsWith("image/")) throw new BadRequestException("File must be an image");
     return this.avatar.savePhoto(req.user.id, file.buffer, file.mimetype);
