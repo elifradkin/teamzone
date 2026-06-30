@@ -27,6 +27,10 @@ services:
       SESSION_SECRET: ${SESSION_SECRET}
       NODE_ENV: production
       PORT: 3000
+      TOKEN_ENCRYPTION_KEY: ${TOKEN_ENCRYPTION_KEY:-}
+      MOTRA_MCP_URL: ${MOTRA_MCP_URL:-https://mcp.motra.com/mcp}
+      MOTRA_INGESTION_ENABLED: ${MOTRA_INGESTION_ENABLED:-false}
+      APP_BASE_URL: ${APP_BASE_URL:-}
 
   caddy:
     build:
